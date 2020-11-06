@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import { useMachine } from '@xstate/react';
+import machine from './Machines';
+
+const {machines, actions } = machine
 
 function App() {
+  const [ state, send ] = useMachine(machines.showMachine, { devTools: true });
+  const isShow = () => state.value == 'show'
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={() => send(actions.showActionToggle)}>{isShow() ? 'Hide' : 'Show'}</button>
+
+      {
+        isShow()
+          ? (
+            <div>
+              멍하~
+            </div>
+          )
+          : (<></>)
+      }
     </div>
   );
 }
